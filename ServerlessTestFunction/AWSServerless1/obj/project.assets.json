@@ -97,11 +97,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jmelrose\\source\\repos\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
+      "projectUniqueName": "C:\\Users\\jmelrose\\Transcat\\pipelineTest\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
       "projectName": "AWSServerless1",
-      "projectPath": "C:\\Users\\jmelrose\\source\\repos\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
+      "projectPath": "C:\\Users\\jmelrose\\Transcat\\pipelineTest\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
       "packagesPath": "C:\\Users\\jmelrose\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jmelrose\\source\\repos\\ServerlessTestFunction\\AWSServerless1\\obj\\",
+      "outputPath": "C:\\Users\\jmelrose\\Transcat\\pipelineTest\\ServerlessTestFunction\\AWSServerless1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jmelrose\\AppData\\Roaming\\NuGet\\NuGet.Config",

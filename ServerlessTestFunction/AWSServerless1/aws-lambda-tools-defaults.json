@@ -9,6 +9,6 @@
   "region": "us-east-1",
   "configuration": "Release",
   "s3-prefix": "AWSServerless1/",
-  "template": "serverless.template",
+  "template": "template.yaml",
   "template-parameters": ""
 }

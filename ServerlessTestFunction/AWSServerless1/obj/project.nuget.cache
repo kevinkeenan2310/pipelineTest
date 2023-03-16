@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KETv5vmoJZBvCgqcspiyNPBHo+yUhVzcJi6vx4iUzTLSpDg8uSAxSS2jUFsdzEC15skfzev8vl8UbXzMrcmOvA==",
+  "dgSpecHash": "cvBnHj1KurVy9EGLEsbOQogeUR7w9idLGrNgTdxQPNWUNyImOXT+w5a5JdutzIQ6+8YrX4MNDr33U2EEbutPfg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jmelrose\\source\\repos\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
+  "projectFilePath": "C:\\Users\\jmelrose\\Transcat\\pipelineTest\\ServerlessTestFunction\\AWSServerless1\\AWSServerless1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jmelrose\\.nuget\\packages\\amazon.lambda.apigatewayevents\\2.5.0\\amazon.lambda.apigatewayevents.2.5.0.nupkg.sha512",
     "C:\\Users\\jmelrose\\.nuget\\packages\\amazon.lambda.core\\2.1.0\\amazon.lambda.core.2.1.0.nupkg.sha512",
