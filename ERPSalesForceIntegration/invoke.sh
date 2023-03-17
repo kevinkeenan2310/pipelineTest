@@ -1,0 +1,1 @@
+sam.cmd local invoke -e input.json SkeletalLambda2

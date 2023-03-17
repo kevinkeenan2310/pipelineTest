@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sample Lambda function
+Resources:
+  SkeletalLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda
+      FunctionName: SkeletalLambda
+      Runtime: dotnet6
+      CodeUri: SkeletalLambda
+      Description: A simple function that takes a string and does a ToUpper
+      MemorySize: 128
+      Timeout: 3
+    Metadata:
+      SamResourceId: SkeletalLambda
+  SkeletalLambda2:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda2
+      FunctionName: SkeletalLambda2
+      Runtime: dotnet6
+      CodeUri: SkeletalLambda2
+      Description: yerp
+      MemorySize: 128
+      Timeout: 3
+    Metadata:
+      SamResourceId: SkeletalLambda2
