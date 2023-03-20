@@ -4,13 +4,17 @@ Resources:
   - SkeletalLambda:
       Type: AWS::Lambda::Function
       Properties:
-        Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda'
-        FunctionName: 'SkeletalLambda'
-        Runtime: 'dotnet6'
-        CodeUri: '.'
-        Description: 'A simple function that takes a string and does a ToUpper'
-        MemorySize: 128
-        Timeout: 3
+        Name: "SkeletalLambda"
+        Alias: "SkeletalLambda"
+        CurrentVersion: "1"
+        TargetVersion: "2"
+   - SkeletalLambda2:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "SkeletalLambda2"
+        Alias: "SkeletalLambda2"
+        CurrentVersion: "1"
+        TargetVersion: "2"
 Hooks:
   - BeforeAllowTraffic: "LambdaFunctionToValidateBeforeTrafficShift"
   - AfterAllowTraffic: "LambdaFunctionToValidateAfterTrafficShift"
