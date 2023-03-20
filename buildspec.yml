@@ -29,7 +29,7 @@ phases:
       - sam build --template ./ERPSalesForceIntegration/template.yaml # NOTE: this is wrong as the whole project
   post_build:
     commands: 
-      - echo "Deploying in the post build phase""
+      - echo "Deploying in the post build phase"
       - sam deploy --capabilities CAPABILITY_IAM
 artifacts:
   files:
