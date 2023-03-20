@@ -10,4 +10,4 @@ phases:
   build:
     commands:
       # Build your application using the SAM CLI
-      sam build
+      - sam build
