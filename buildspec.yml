@@ -13,9 +13,9 @@ phases:
   pre_build:
     commands:
       - echo "Copying template.yaml file to expected location"
-      - cp template.yml /codebuild/output/src812130917/src/template.yaml
+      - cp ERPSalesForceIntegration/template.yaml /codebuild/output/src812130917/src/template.yaml
   build:
     commands: # commands run during the build
       # Build your application using the SAM CLI
       - echo "Building SAM application"
-      - sam build --tempate template.yaml
+      - sam build --template template.yaml
