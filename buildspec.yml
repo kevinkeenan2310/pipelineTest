@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      # Install the AWS CLI version 2
+      if not exist "%ProgramFiles%\Amazon\AWSCLIV2" (powershell.exe -Command "& {Invoke-WebRequest -Uri https://awscli.amazonaws.com/AWSCLIV2.msi -OutFile AWSCLIV2.msi -UseBasicParsing}"; msiexec.exe /i AWSCLIV2.msi /quiet)
+      
+      # Install the SAM CLI
+      powershell.exe -Command "& {Invoke-WebRequest -Uri https://awscli.amazonaws.com/samcli/latest/SAMCLI-64.msi -OutFile SAMCLI-64.msi -UseBasicParsing}"; msiexec.exe /i SAMCLI-64.msi /quiet
+  build:
+    commands:
+      # Build your application using the SAM CLI
+      sam build
