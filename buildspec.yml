@@ -5,8 +5,8 @@ phases:
     commands:      
        # Install the AWS CLI version 2
        # - apt-get update && apt-get install -y python3-pip
-      - yum load-transaction /tmp/yum_save_tx.2023-03-20.12-31.KuiUZZ.yumtx
       - yum update
+      - echo updated success
       - yum install -y python3-pip
       - pip3 install awscli
       - pip3 install aws-sam-cli
