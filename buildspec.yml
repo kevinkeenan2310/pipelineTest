@@ -17,7 +17,6 @@ phases:
       - echo "Copying template.yaml file to expected location"
       # - cp ERPSalesForceIntegration/template.yaml /codebuild/output/src812130917/src/template.yaml
       - ls -R
-      - cp ERPSalesForceIntegration/template.yaml /codebuild/output/template.yaml
       - cp -R ./ERPSalesForceIntegration /codebuild/output
       # NOTE: this is wrong as the whole project is already being copied over to the a directory specific to the build /codebuild/output/src430066580/src/ERPSalesForceIntegration...for now just force it through
       # - ls -R /codebuild/output
@@ -25,6 +24,6 @@ phases:
     commands: # commands run during the build
       # Build your application using the SAM CLI
       - echo "Building SAM application"
-      - ls -R
-      - ls -R ../../
-      - sam build --template ../../template.yaml
+      #- ls -R
+      #- ls -R ../../
+      - sam build --template ./ERPSalesForceIntegration/template.yaml # NOTE: this is wrong as the whole project
