@@ -21,7 +21,7 @@ Resources:
       FunctionName: SkeletalLambda2
       Runtime: dotnet6
       CodeUri: SkeletalLambda2
-      Description: yerp
+      Description: this is a secondary test function
       MemorySize: 128
       Timeout: 3
     Metadata:
