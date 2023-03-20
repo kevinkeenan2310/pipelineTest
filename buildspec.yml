@@ -30,7 +30,7 @@ phases:
   post_build:
     commands: 
       - echo "Deploying in the post build phase"
-      - sam deploy --capabilities CAPABILITY_IAM
+      - sam deploy --stack-name transcatPipelineStack --capabilities CAPABILITY_IAM
 artifacts:
   files:
     - '**/*'
