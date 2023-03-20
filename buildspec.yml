@@ -27,3 +27,8 @@ phases:
       #- ls -R
       #- ls -R ../../
       - sam build --template ./ERPSalesForceIntegration/template.yaml # NOTE: this is wrong as the whole project
+artifacts:
+  files:
+    - '**/*'
+  name: BuildArtifact
+  base-directory: ./ERPSalesForceIntegration
