@@ -6,11 +6,16 @@ phases:
        # Install the AWS CLI version 2
        # - apt-get update && apt-get install -y python3-pip
       - yum update -y
-      - echo updated success
+      - echo "updated success"
       - yum install -y python3-pip
       - pip3 install awscli
       - pip3 install aws-sam-cli
+  pre_build:
+    commands:
+      - echo "Copying template.yaml file to expected location"
+      - cp template.yml /codebuild/output/src812130917/src/template.yaml
   build:
     commands: # commands run during the build
       # Build your application using the SAM CLI
-      - sam build
+      - echo "Building SAM application"
+      - sam build --tempate template.yaml
