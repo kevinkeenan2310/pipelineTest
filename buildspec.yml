@@ -9,6 +9,7 @@ phases:
       - pip3 install aws-sam-cli
   pre_build:
     commands:
+      - aws s3api create-bucket --bucket transcat-pipeline-test-bucket2 --region us-east-1 --create-bucket-configuration LocationConstraint=us-east-1 || true
       - cp -R ./ERPSalesForceIntegration /codebuild/output
   build:
     commands: 
