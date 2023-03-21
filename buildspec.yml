@@ -15,7 +15,7 @@ phases:
       - sam build --template ./ERPSalesForceIntegration/template.yaml 
   post_build:
     commands: 
-      - sam deploy --stack-name transcatPipelineStack --capabilities CAPABILITY_IAM --s3-bucket transcat-pipeline-test-bucket
+      - sam deploy --stack-name transcatPipelineStack2 --capabilities CAPABILITY_IAM --s3-bucket transcat-pipeline-test-bucket2
 artifacts:
   files:
     - '**/*'
