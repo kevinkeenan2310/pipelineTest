@@ -47,3 +47,4 @@ Deploy function to AWS Lambda
     cd "ERPSalesForceIntegration/src/ERPSalesForceIntegration"
     dotnet lambda deploy-function
 ```
+.
