@@ -23,3 +23,14 @@ Resources:
       Description: 'this is a secondary test function'
       MemorySize: 128
       Timeout: 3
+  MySampleStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Definition:
+        StartAt: MyLambdaState
+        States:
+          MyLambdaState:
+            Type: Task
+            Resource: !GetAtt SkeletalLambda.Arn
+            End: true
+      Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
