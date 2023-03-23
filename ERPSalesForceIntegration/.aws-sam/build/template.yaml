@@ -26,3 +26,17 @@ Resources:
       Timeout: 3
     Metadata:
       SamResourceId: SkeletalLambda2
+  MySampleStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Definition:
+        StartAt: MyLambdaState
+        States:
+          MyLambdaState:
+            Type: Task
+            Resource:
+              Fn::GetAtt:
+              - SkeletalLambda
+              - Arn
+            End: true
+      Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
