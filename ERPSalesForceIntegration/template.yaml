@@ -22,7 +22,7 @@ Resources:
         States:
           MyLambdaState:
             Type: Task
-            Resource: !GetAtt SkeletalLambda2.Arn
+            Resource: !GetAtt SkeletalLambda.Arn
             End: true
       Events:
         Schedule:
