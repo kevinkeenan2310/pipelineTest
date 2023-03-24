@@ -14,18 +14,6 @@ Resources:
       Timeout: 3
     Metadata:
       SamResourceId: SkeletalLambda
-  SkeletalLambda2:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda2
-      FunctionName: SkeletalLambda2
-      Runtime: dotnet6
-      CodeUri: SkeletalLambda2
-      Description: this is a secondary test function
-      MemorySize: 128
-      Timeout: 3
-    Metadata:
-      SamResourceId: SkeletalLambda2
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -37,13 +25,14 @@ Resources:
             Type: Task
             Resource:
               Fn::GetAtt:
-              - SkeletalLambda2
+              - SkeletalLambda
               - Arn
+            Input: hello!
             End: true
       Events:
         Schedule:
           Type: ScheduleV2
           Properties:
-            ScheduleExpression: rate(10 hours)
+            ScheduleExpression: rate(2 minutes)
             Input: '{"hello": "simple"}'
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
