@@ -39,17 +39,11 @@ Resources:
               - SkeletalLambda
               - Arn
             End: true
+      Events:
+        CWSchedule:
+          Type: ScheduleV2
+          Properties:
+            Schedule: rate(25 minute)
+            Name: TestScheduleV2StateMachine
+            Description: Test schedule event
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
-  MyEventScheduler:
-    Type: AWS::Scheduler::Schedule
-    Properties:
-      Definition:
-        ScheduleExpression: rate(5 minutes)
-        FlexibleTimeWindow:
-          Mode: false
-        Target:
-          Arn:
-            Fn::GetAtt:
-            - MySampleStateMachine
-            - Arn
-          RoleArn: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
