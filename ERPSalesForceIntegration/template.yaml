@@ -21,6 +21,8 @@ Resources:
         StartAt: MyLambdaState
         States:
           MyLambdaState:
+          Parameters:
+            FunctionName: "$Hello"
             Type: Task
             Resource: !GetAtt SkeletalLambda.Arn
             End: true
@@ -28,6 +30,6 @@ Resources:
         Schedule:
           Type: ScheduleV2
           Properties:
-            ScheduleExpression: rate(2 minutes)
-            Input: 'hello!'
+            ScheduleExpression: rate(1 minute)
+            Input: {"hello": "simple"}
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
