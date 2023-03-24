@@ -22,16 +22,5 @@ namespace ERPSalesForceIntegration
         {
             return input.ToUpper();
         }
-
-        /// <summary>
-        /// Another simple function created in order to test the creation of mulitple aws resources from template.yaml file
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public async Task<string> SkeletalLambda2(string input, ILambdaContext context)
-        {
-            return "Testing a lambda projects second function";
-        }
     }
 }
