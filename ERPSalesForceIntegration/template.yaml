@@ -23,18 +23,18 @@ Resources:
       Description: 'this is a secondary test function'
       MemorySize: 128
       Timeout: 3
-  MySampleStateMachine:
+  MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
+      Type: STANDARD
       Definition:
         StartAt: MyLambdaState
         States:
           MyLambdaState:
             Type: Task
-            Resource: !GetAtt SkeletalLambda.Arn
+            Resource: !GetAtt SkeletalLambda2.Arn
             End: true
       Events:
-        Events:
         Schedule:
           Type: ScheduleV2
           Properties:

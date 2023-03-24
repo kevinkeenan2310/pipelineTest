@@ -26,9 +26,10 @@ Resources:
       Timeout: 3
     Metadata:
       SamResourceId: SkeletalLambda2
-  MySampleStateMachine:
+  MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
+      Type: STANDARD
       Definition:
         StartAt: MyLambdaState
         States:
@@ -36,14 +37,13 @@ Resources:
             Type: Task
             Resource:
               Fn::GetAtt:
-              - SkeletalLambda
+              - SkeletalLambda2
               - Arn
             End: true
       Events:
-        CWSchedule:
+        Schedule:
           Type: ScheduleV2
           Properties:
-            Schedule: rate(25 minute)
-            Name: TestScheduleV2StateMachine
-            Description: Test schedule event
+            ScheduleExpression: rate(1 minute)
+            Input: '{"hello": "simple"}'
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
