@@ -29,5 +29,5 @@ Resources:
           Type: ScheduleV2
           Properties:
             ScheduleExpression: rate(10 hours)
-            Input: '{"hello": "simple"}'
+            Input: 'hello'
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
