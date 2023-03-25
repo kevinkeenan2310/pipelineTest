@@ -20,7 +20,7 @@ namespace ERPSalesForceIntegration
         /// <returns></returns>
         public async Task<string> SkeletalLambda(string input, ILambdaContext context)
         {
-            return input.ToUpper();
+            return "Success";
         }
     }
 }
