@@ -28,5 +28,5 @@ Resources:
         Schedule:
           Type: ScheduleV2
           Properties:
-            ScheduleExpression: rate(10 hours)
+            ScheduleExpression: rate(1 minute)
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
