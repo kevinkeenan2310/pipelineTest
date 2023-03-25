@@ -1,18 +1,19 @@
 ﻿AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Description: 'Sample Lambda function'
-
+Transform: AWS::Serverless-2016-10-31
+Description: Sample Lambda function
 Resources:
   SkeletalLambda:
-    Type: 'AWS::Serverless::Function'
+    Type: AWS::Serverless::Function
     Properties:
-      Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda'
-      FunctionName: 'SkeletalLambda'
-      Runtime: 'dotnet6'
-      CodeUri: '.'
-      Description: 'A simple function that takes a string and does a ToUpper'
+      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda
+      FunctionName: SkeletalLambda
+      Runtime: dotnet6
+      CodeUri: SkeletalLambda
+      Description: A simple function that takes a string and does a ToUpper
       MemorySize: 128
       Timeout: 3
+    Metadata:
+      SamResourceId: SkeletalLambda
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -22,12 +23,15 @@ Resources:
         States:
           MyLambdaState:
             Type: Task
-            Resource: !GetAtt SkeletalLambda.Arn
+            Resource:
+              Fn::GetAtt:
+              - SkeletalLambda
+              - Arn
             End: true
       Events:
         Schedule:
           Type: ScheduleV2
           Properties:
             ScheduleExpression: rate(1 minute)
-            Input: {"test": "simple"}
+            Input: '{"hello": "simple"}'
       Role: arn:aws:iam::674032521146:role/service-role/codebuild-pipelineBuildProj-service-role
