@@ -43,6 +43,10 @@ Resources:
       Description: A simple function that takes a string and does a ToUpper
       MemorySize: 128
       Timeout: 3
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
     Metadata:
       SamResourceId: SkeletalLambda
   MyTranscatStateMachine:
@@ -64,3 +68,7 @@ Resources:
           Type: ScheduleV2
           Properties:
             ScheduleExpression: rate(1 minute)
+      Role:
+        Fn::GetAtt:
+        - StatesExecutionRole
+        - Arn

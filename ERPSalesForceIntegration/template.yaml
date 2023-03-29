@@ -44,6 +44,7 @@ Resources:
       Description: 'A simple function that takes a string and does a ToUpper'
       MemorySize: 128
       Timeout: 3
+      Role: !GetAtt LambdaExecutionRole.Arn
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -60,3 +61,4 @@ Resources:
           Type: ScheduleV2
           Properties:
             ScheduleExpression: rate(1 minute)
+      Role: !GetAtt StatesExecutionRole.Arn
