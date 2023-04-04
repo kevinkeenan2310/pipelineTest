@@ -26,6 +26,28 @@ Resources:
                   - "secretsmanager:GetSecretValue"
                   - "secretsmanager:PutSecretValue"
                 Resource: "*"
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - !Sub states.${AWS::Region}.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "secretsmanager:GetSecretValue"
+                  - "secretsmanager:PutSecretValue"
+                Resource: "*"
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -56,7 +78,7 @@ Resources:
       Description: 'this lambda will refresh the salesforce auth token using values located in aws secrets manager'
       MemorySize: 128
       Timeout: 60
-      Role: !GetAtt StatesExecutionRole.Arn
+      Role: !GetAtt LambdaExecutionRole.Arn
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
