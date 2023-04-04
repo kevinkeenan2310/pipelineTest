@@ -8,6 +8,6 @@ architecture = "x86_64"
 handler = "ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["SkeletalLambda"]
+functions = ["SkeletalLambda", "SkeletalLambda2", "SalesforceAuthHandler"]
 
 [layer_build_definitions]

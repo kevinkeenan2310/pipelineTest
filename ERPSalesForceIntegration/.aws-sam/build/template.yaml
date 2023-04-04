@@ -2,16 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Sample Lambda function
 Resources:
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service: lambda.amazonaws.com
-          Action: sts:AssumeRole
   StatesExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -32,6 +22,8 @@ Resources:
           - Effect: Allow
             Action:
             - lambda:InvokeFunction
+            - secretsmanager:GetSecretValue
+            - secretsmanager:PutSecretValue
             Resource: '*'
   SkeletalLambda:
     Type: AWS::Serverless::Function
@@ -43,12 +35,37 @@ Resources:
       Description: A simple function that takes a string and does a ToUpper
       MemorySize: 128
       Timeout: 3
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
     Metadata:
       SamResourceId: SkeletalLambda
+  SkeletalLambda2:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda2
+      FunctionName: SkeletalLambda2
+      Runtime: dotnet6
+      CodeUri: SkeletalLambda2
+      Description: this is a secondary test function
+      MemorySize: 128
+      Timeout: 3
+    Metadata:
+      SamResourceId: SkeletalLambda2
+  SalesforceAuthHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ERPSalesForceIntegration::ERPSalesForceIntegration.SalesforceAuthHandler::AccessTokenHandler
+      FunctionName: AccessTokenHandler
+      Runtime: dotnet6
+      CodeUri: SalesforceAuthHandler
+      Description: this lambda will refresh the salesforce auth token using values
+        located in aws secrets manager
+      MemorySize: 128
+      Timeout: 60
+      Role:
+        Fn::GetAtt:
+        - StatesExecutionRole
+        - Arn
+    Metadata:
+      SamResourceId: SalesforceAuthHandler
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -60,14 +77,14 @@ Resources:
             Type: Task
             Resource:
               Fn::GetAtt:
-              - SkeletalLambda
+              - SkeletalLambda2
               - Arn
             End: true
       Events:
         Schedule:
           Type: ScheduleV2
           Properties:
-            ScheduleExpression: rate(1 minute)
+            ScheduleExpression: rate(5 minute)
       Role:
         Fn::GetAtt:
         - StatesExecutionRole

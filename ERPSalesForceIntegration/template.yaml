@@ -23,6 +23,8 @@ Resources:
               - Effect: Allow
                 Action:
                   - "lambda:InvokeFunction"
+                  - "secretsmanager:GetSecretValue"
+                  - "secretsmanager:PutSecretValue"
                 Resource: "*"
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
@@ -34,6 +36,27 @@ Resources:
       Description: 'A simple function that takes a string and does a ToUpper'
       MemorySize: 128
       Timeout: 3
+  SkeletalLambda2:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda2'
+      FunctionName: 'SkeletalLambda2'
+      Runtime: 'dotnet6'
+      CodeUri: '.'
+      Description: 'this is a secondary test function'
+      MemorySize: 128
+      Timeout: 3
+  SalesforceAuthHandler:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.SalesforceAuthHandler::AccessTokenHandler'
+      FunctionName: 'AccessTokenHandler'
+      Runtime: 'dotnet6'
+      CodeUri: '.'
+      Description: 'this lambda will refresh the salesforce auth token using values located in aws secrets manager'
+      MemorySize: 128
+      Timeout: 60
+      Role: !GetAtt StatesExecutionRole.Arn
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
@@ -43,11 +66,11 @@ Resources:
         States:
           MyLambdaState:
             Type: Task
-            Resource: !GetAtt SkeletalLambda.Arn
+            Resource: !GetAtt SkeletalLambda2.Arn
             End: true
       Events:
         Schedule:
           Type: ScheduleV2
           Properties:
-            ScheduleExpression: rate(1 minute)
+            ScheduleExpression: rate(5 minute)
       Role: !GetAtt StatesExecutionRole.Arn

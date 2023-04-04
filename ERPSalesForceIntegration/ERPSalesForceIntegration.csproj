@@ -12,5 +12,7 @@
     <PackageReference Include="AWSSDK.Lambda" Version="3.7.105.11" />
     <PackageReference Include="AWSSDK.RDSDataService" Version="3.7.100.85" />
     <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.101.40" />
+    <PackageReference Include="MySqlConnector" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>
