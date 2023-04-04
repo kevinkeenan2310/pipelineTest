@@ -57,7 +57,7 @@ Resources:
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
             SecretArn: 
-              Ref: 'CustomerRelationshipManagementApi/SalesforceAuthenticationToken'
+              Ref: CustomerRelationshipManagementApi/SalesforceAuthenticationToken
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
