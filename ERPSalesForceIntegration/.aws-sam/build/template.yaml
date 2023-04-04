@@ -59,8 +59,9 @@ Resources:
       MemorySize: 128
       Timeout: 60
       Policies:
-      - AWSSecretsManagerGetSecretValuePolicy: null
-        SecretArn: arn:aws:secretsmanager:CustomerRelationshipManagementApi/SalesforceAuthenticationToken
+      - AWSSecretsManagerGetSecretValuePolicy:
+          SecretArn:
+            Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken
     Metadata:
       SamResourceId: SalesforceAuthHandler
   MyTranscatStateMachine:
