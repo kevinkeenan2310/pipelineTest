@@ -23,10 +23,6 @@ Resources:
             Action:
             - lambda:InvokeFunction
             Resource: '*'
-          - Effect: Allow
-            Action:
-            - secretsmanager:GetSecretValue
-            SecretArn: arn:aws:secretsmanager:CustomerRelationshipManagementApi/SalesforceAuthenticationToken
   SkeletalLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -62,10 +58,10 @@ Resources:
         located in aws secrets manager
       MemorySize: 128
       Timeout: 60
-      Role:
-        Fn::GetAtt:
-        - StatesExecutionRole
-        - Arn
+      Policies:
+      - AWSSecretsManagerGetSecretValuePolicy:
+          SecretArn:
+            Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken
     Metadata:
       SamResourceId: SalesforceAuthHandler
   MyTranscatStateMachine:
