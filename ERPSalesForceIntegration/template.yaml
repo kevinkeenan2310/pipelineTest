@@ -44,6 +44,8 @@ Resources:
               - Effect: Allow
                 Action:
                   - "secretsmanager:GetSecretValue"
+                  - "secretsmanager:PutSecretValue"
+                  - "secretsmanager:UpdateSecretValue"
                 Resource: "arn:aws:secretsmanager:us-east-1:674032521146:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken-UFZ0FY"
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
