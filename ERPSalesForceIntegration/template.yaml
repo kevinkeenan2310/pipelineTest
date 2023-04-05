@@ -45,7 +45,7 @@ Resources:
                 Action:
                   - "secretsmanager:GetSecretValue"
                   - "secretsmanager:PutSecretValue"
-                Resource: !Sub "{{resolve:ssm:salesforceSecretArn}}"
+                Resource: !Sub "{{resolve:ssm:/salesforce/accessSecretArn}}"
   SecretsRotateLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
