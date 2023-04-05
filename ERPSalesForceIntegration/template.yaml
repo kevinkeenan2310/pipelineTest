@@ -27,8 +27,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - secretsmanager:GetSecretValue
-                SecretArn:
-                  Ref: CustomerRelationshipManagementApi/SalesforceAuthenticationToken
+                SecretArn: 'arn:aws:secretsmanager:CustomerRelationshipManagementApi/SalesforceAuthenticationToken'
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
