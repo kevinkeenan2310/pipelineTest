@@ -46,7 +46,7 @@ Resources:
                   - "secretsmanager:GetSecretValue"
                   - "secretsmanager:PutSecretValue"
                   - "secretsmanager:UpdateSecretValue"
-                Resource: "arn:aws:secretsmanager:us-east-1:674032521146:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken-UFZ0FY"
+                Resource: !Sub "{{resolve:ssm:salesforceSecretArn}}"
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
