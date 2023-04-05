@@ -55,7 +55,7 @@ Resources:
       MemorySize: 128
       Timeout: 60
       Policies:
-        - AWSSecretsManagerRotationPolicy:
+        - AWSSecretsManagerGetSecretValuePolicy:
             SecretArn: 'arn:aws:secretsmanager:us-east-1:674032521146:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken-UFZ0FY'
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
