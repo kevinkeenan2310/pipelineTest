@@ -56,7 +56,7 @@ Resources:
       Timeout: 60
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
-            SecretArn: !Sub 'arn:aws:secretsmanager:us-east-1:674032521146:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken-UFZ0FY'
+            SecretArn: 'arn:aws:secretsmanager:us-east-1:674032521146:secret:CustomerRelationshipManagementApi/SalesforceAuthenticationToken-UFZ0FY'
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
