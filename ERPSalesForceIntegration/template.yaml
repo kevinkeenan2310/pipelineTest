@@ -24,10 +24,6 @@ Resources:
                 Action:
                   - "lambda:InvokeFunction"
                 Resource: "*"
-              - Effect: Allow
-                Action:
-                  - secretsmanager:GetSecretValue
-                SecretArn: 'arn:aws:secretsmanager:CustomerRelationshipManagementApi/SalesforceAuthenticationToken'
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -58,7 +54,10 @@ Resources:
       Description: 'this lambda will refresh the salesforce auth token using values located in aws secrets manager'
       MemorySize: 128
       Timeout: 60
-      Role: !GetAtt StatesExecutionRole.Arn
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+          SecretArn: 
+            Ref: 'arn:aws:secretsmanager:CustomerRelationshipManagementApi/SalesforceAuthenticationToken'
   MyTranscatStateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
