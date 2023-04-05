@@ -50,10 +50,8 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: AccessTokenHandler
-      Principal: 
-        Service:
-          - secretsmanager.amazonaws.com
+      FunctionName: !GetAtt SalesforceAuthHandler.Arn
+      Principal: 'secretsmanager.amazonaws.com'
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:

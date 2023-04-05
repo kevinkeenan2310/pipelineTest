@@ -44,7 +44,6 @@ Resources:
             Action:
             - secretsmanager:GetSecretValue
             - secretsmanager:PutSecretValue
-            - secretsmanager:UpdateSecretValue
             Resource:
               Fn::Sub: '{{resolve:ssm:salesforceSecretArn}}'
   SecretsRotateLambdaPermission:
@@ -52,9 +51,7 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: AccessTokenHandler
-      Principal:
-        Service:
-        - secretsmanager.amazonaws.com
+      Principal: secretsmanager.amazonaws.com
   SkeletalLambda:
     Type: AWS::Serverless::Function
     Properties:
