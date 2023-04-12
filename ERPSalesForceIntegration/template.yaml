@@ -46,6 +46,16 @@ Resources:
                   - "secretsmanager:GetSecretValue"
                   - "secretsmanager:PutSecretValue"
                 Resource: !Sub "{{resolve:ssm:/salesforce/accessSecretArn}}"
+        - PolicyName: LambdaSFAccessTokenHandlerLogsPolicy
+          PolicyDocument:
+            Version: '2012-10-17' # Policy Document
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
   SecretsRotateLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
