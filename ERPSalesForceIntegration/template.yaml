@@ -24,35 +24,6 @@ Resources:
                 Action:
                   - "lambda:InvokeFunction"
                 Resource: "*"
-  SchedulerFunctionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Policies:
-        - PolicyName: SchedulerPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'lambda:InvokeFunction'
-                Resource: !GetAtt SchedulerFunction.Arn
-        - PolicyName: CloudWatchLogsFullAccess
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:*
-                Resource: arn:aws:logs:*:*:*- 
   LambdaRotateRole:
     Type: AWS::IAM::Role
     Properties:
@@ -111,6 +82,35 @@ Resources:
       Description: 'this is a secondary test function'
       MemorySize: 128
       Timeout: 3
+  SchedulerFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: SchedulerPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'lambda:InvokeFunction'
+                Resource: !GetAtt SchedulerFunction.Arn
+        - PolicyName: CloudWatchLogsFullAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource: arn:aws:logs:*:*:*
   SchedulerFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -122,19 +122,22 @@ Resources:
       MemorySize: 256
       Timeout: 300 
       Role: !GetAtt SchedulerFunctionRole.Arn
-      Events:
-        ScheduleEvent:
-          Type: Schedule
-          Properties:
-            Schedule: !GetAtt ScheduleRule.Arn
   ScheduleRule:
     Type: AWS::Events::Rule
     Properties:
       Description: "Schedule rule to trigger the Lambda function"
-      ScheduleExpression: "cron(5 * * * ? *)"  # cron expression for triggering the function at 6 AM every day
+      ScheduleExpression: "cron(5 * * * ? *)"  # cron expression for triggering the function at 5th minute of every hour
       State: "ENABLED"
       Targets:
         - Arn: !GetAtt SchedulerFunction.Arn
+          Id: "TargetFunction"
+  ScheduleRulePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt SchedulerFunction.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt ScheduleRule.Arn
   SalesforceAuthHandler:
     Type: 'AWS::Serverless::Function'
     Properties:
