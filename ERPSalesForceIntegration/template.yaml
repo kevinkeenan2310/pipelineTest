@@ -3,65 +3,6 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: 'Sample Lambda function'
 
 Resources:
-  StatesExecutionRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - !Sub states.${AWS::Region}.amazonaws.com
-            Action: "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        - PolicyName: StatesExecutionPolicy
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "lambda:InvokeFunction"
-                Resource: "*"
-  LambdaRotateRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Policies:
-        - PolicyName: LambdaRotatePolicy
-          PolicyDocument:
-            Version: '2012-10-17' # Policy Document
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "secretsmanager:GetSecretValue"
-                  - "secretsmanager:PutSecretValue"
-                Resource: !Sub "{{resolve:ssm:/salesforce/accessSecretArn}}"
-        - PolicyName: LambdaSFAccessTokenHandlerLogsPolicy
-          PolicyDocument:
-            Version: '2012-10-17' # Policy Document
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "logs:CreateLogGroup"
-                  - "logs:CreateLogStream"
-                  - "logs:PutLogEvents"
-                Resource: "arn:aws:logs:*:*:*"
-  SecretsRotateLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt SalesforceAuthHandler.Arn
-      Principal: 'secretsmanager.amazonaws.com'
   SkeletalLambda:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -72,16 +13,20 @@ Resources:
       Description: 'A simple function that takes a string and does a ToUpper'
       MemorySize: 128
       Timeout: 3
-  SkeletalLambda2:
-    Type: 'AWS::Serverless::Function'
+  SchedulerFunctionRole:
+    Type: 'AWS::IAM::Role'
     Properties:
-      Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.ExtractTransformLoadErpObjects::SkeletalLambda2'
-      FunctionName: 'SkeletalLambda2'
-      Runtime: 'dotnet6'
-      CodeUri: '.'
-      Description: 'this is a secondary test function'
-      MemorySize: 128
-      Timeout: 3
+      RoleName: 'SchedulerFunctionRole'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service: 'lambda.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AWSLambdaFullAccess' 
   SchedulerFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -92,6 +37,7 @@ Resources:
       Description: 'Function determines dependencies of different objects and schedules them accordingly'
       MemorySize: 256
       Timeout: 300 
+      Role: !GetAtt SchedulerFunctionRole.Arn  # add a Role property to the function
   ScheduleRule:
     Type: AWS::Events::Rule
     Properties:
@@ -108,31 +54,3 @@ Resources:
       Action: 'lambda:InvokeFunction'
       Principal: events.amazonaws.com
       SourceArn: !GetAtt ScheduleRule.Arn
-  SalesforceAuthHandler:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      Handler: 'ERPSalesForceIntegration::ERPSalesForceIntegration.SalesforceAuthHandler::AccessTokenHandler'
-      FunctionName: 'AccessTokenHandler'
-      Runtime: 'dotnet6'
-      CodeUri: '.'
-      Description: 'this lambda will refresh the salesforce auth token using values located in aws secrets manager'
-      MemorySize: 128
-      Timeout: 60
-      Role: !GetAtt LambdaRotateRole.Arn
-  MyTranscatStateMachine:
-    Type: AWS::Serverless::StateMachine
-    Properties:
-      Type: STANDARD
-      Definition:
-        StartAt: MyLambdaState
-        States:
-          MyLambdaState:
-            Type: Task
-            Resource: !GetAtt SkeletalLambda2.Arn
-            End: true
-      Events:
-        Schedule:
-          Type: ScheduleV2
-          Properties:
-            ScheduleExpression: rate(5 minute)
-      Role: !GetAtt StatesExecutionRole.Arn
