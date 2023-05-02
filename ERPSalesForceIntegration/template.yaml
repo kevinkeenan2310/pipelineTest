@@ -44,7 +44,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - 'lambda:InvokeFunction'
-                Resource: !GetAtt ErpToSalesforceETLFunction.Arn
+                Resource: !GetAtt SchedulerFunction.Arn
         - PolicyName: CloudWatchLogsFullAccess
           PolicyDocument:
             Version: '2012-10-17'
