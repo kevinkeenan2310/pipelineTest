@@ -18,7 +18,7 @@ namespace ERPSalesForceIntegration
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async Task<string> SkeletalLambda(ILambdaContext context)
+        public async Task<string> SkeletalLambda(string input, ILambdaContext context)
         {
             return "Success";
         }
