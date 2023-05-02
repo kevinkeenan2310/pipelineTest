@@ -92,24 +92,6 @@ Resources:
       Description: 'Function determines dependencies of different objects and schedules them accordingly'
       MemorySize: 256
       Timeout: 300 
-  ScheduleRuleLambdaRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: 'SchedulerFunctionPolicy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: 'lambda:InvokeFunction'
-                Resource: !GetAtt SchedulerFunction.Arn
   ScheduleRule:
     Type: AWS::Events::Rule
     Properties:
@@ -119,7 +101,13 @@ Resources:
       Targets:
         - Arn: !GetAtt SchedulerFunction.Arn
           Id: "TargetFunction"
-      RoleArn: !GetAtt ScheduleRuleLambdaRole.Arn
+  ScheduleLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref SchedulerFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt ScheduleRule.Arn
   SalesforceAuthHandler:
     Type: 'AWS::Serverless::Function'
     Properties:
