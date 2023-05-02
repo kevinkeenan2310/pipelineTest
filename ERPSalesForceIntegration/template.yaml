@@ -82,35 +82,6 @@ Resources:
       Description: 'this is a secondary test function'
       MemorySize: 128
       Timeout: 3
-  SchedulerFunctionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Policies:
-        - PolicyName: SchedulerPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'lambda:InvokeFunction'
-                Resource: !GetAtt SchedulerFunction.Arn
-        - PolicyName: CloudWatchLogsFullAccess
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:*
-                Resource: arn:aws:logs:*:*:*
   SchedulerFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -121,7 +92,6 @@ Resources:
       Description: 'Function determines dependencies of different objects and schedules them accordingly'
       MemorySize: 256
       Timeout: 300 
-      Role: !GetAtt SchedulerFunctionRole.Arn
   ScheduleRule:
     Type: AWS::Events::Rule
     Properties:
@@ -131,13 +101,6 @@ Resources:
       Targets:
         - Arn: !GetAtt SchedulerFunction.Arn
           Id: "TargetFunction"
-  ScheduleRulePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !GetAtt SchedulerFunction.Arn
-      Action: "lambda:InvokeFunction"
-      Principal: "events.amazonaws.com"
-      SourceArn: !GetAtt ScheduleRule.Arn
   SalesforceAuthHandler:
     Type: 'AWS::Serverless::Function'
     Properties:
