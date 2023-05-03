@@ -1,8 +1,6 @@
 ﻿AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: 'Sample Lambda function'
-Capabilities:
-  - CAPABILITY_NAMED_IAM
 
 Resources:
   SkeletalLambda:
@@ -62,10 +60,3 @@ Resources:
       Targets:
         - Arn: !GetAtt SchedulerFunction.Arn
           Id: "TargetFunction"
-  ScheduleLambdaInvokePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref SchedulerFunction
-      Action: 'lambda:InvokeFunction'
-      Principal: events.amazonaws.com
-      SourceArn: !GetAtt ScheduleRule.Arn
