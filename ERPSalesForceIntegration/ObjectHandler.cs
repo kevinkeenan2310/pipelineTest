@@ -17,11 +17,14 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Amazon.CloudWatchLogs;
+using Amazon.CloudWatchLogs.Model;
 
 namespace ERPSalesForceIntegration
 {
     public class ObjectScheduler
     {
+        private static readonly IAmazonCloudWatchLogs CloudWatchLogs = new AmazonCloudWatchLogsClient();
         private const string TargetFunctionName = "SkeletalLambda";
         //private const string TargetFunctionInput = "{\"objectTypeKey\": \"salesforceAbcCodes\"}";
         public ILogger<ObjectScheduler> _logger;
@@ -40,6 +43,22 @@ namespace ERPSalesForceIntegration
         }
         public async Task<string> SchedulerFunction(ILambdaContext context)
         {
+            string timestamp = DateTime.Now.Ticks.ToString();
+            string logStreamName = $"log-stream-{timestamp}";
+
+            // Set the log stream name for this invocation
+            System.Environment.SetEnvironmentVariable("AWS_LAMBDA_LOG_STREAM_NAME", logStreamName);
+
+            // Log some data using ILogger
+            _logger.LogInformation("Hello, world!");
+
+            // Create a new log stream for the next invocation
+            await CloudWatchLogs.CreateLogStreamAsync(new CreateLogStreamRequest
+            {
+                LogGroupName = context.LogGroupName,
+                LogStreamName = logStreamName
+            });
+
             _logger.LogInformation("Starting the lookup scheduler function ");
             var lambdaClient = new AmazonLambdaClient();
 
