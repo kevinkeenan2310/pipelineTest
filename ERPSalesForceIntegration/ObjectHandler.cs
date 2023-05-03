@@ -16,6 +16,7 @@ using MySqlConnector;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace ERPSalesForceIntegration
 {
@@ -23,10 +24,23 @@ namespace ERPSalesForceIntegration
     {
         private const string TargetFunctionName = "SkeletalLambda";
         //private const string TargetFunctionInput = "{\"objectTypeKey\": \"salesforceAbcCodes\"}";
+        public ILogger<ObjectScheduler> _logger;
 
-
+        public ObjectScheduler()
+        {
+            LambdaLoggerOptions loggerOptions = new LambdaLoggerOptions()
+            {
+                IncludeException = true
+            };
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddLambdaLogger(loggerOptions);
+            });
+            _logger = loggerFactory.CreateLogger<ObjectScheduler>();
+        }
         public async Task<string> SchedulerFunction(ILambdaContext context)
         {
+            _logger.LogInformation("Starting the lookup scheduler function ");
             var lambdaClient = new AmazonLambdaClient();
 
             //var payloadStr = "salesforceAbcCodes";
@@ -41,6 +55,7 @@ namespace ERPSalesForceIntegration
                 Payload = "\"" + parameter + "\""
             }).ToArray();
 
+            _logger.LogInformation("Invoking tasks");
             // invoke the Lambda functions concurrently using Task.WhenAll
             var invokeTasks = invokeRequests.Select(invokeRequest => lambdaClient.InvokeAsync(invokeRequest)).ToArray();
             await Task.WhenAll(invokeTasks);
@@ -49,6 +64,7 @@ namespace ERPSalesForceIntegration
             var responseStrings = invokeTasks.Select(invokeTask => Encoding.UTF8.GetString(invokeTask.Result.Payload.ToArray()));
             foreach (var responseString in responseStrings)
             {
+                _logger.LogInformation($"response from each call: {responseString}");
                 Console.WriteLine(responseString);
             }
             return responseStrings.ToArray()[0];

@@ -26,7 +26,20 @@ Resources:
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-        - 'arn:aws:iam::aws:policy/AWSLambdaFullAccess' 
+      Policies:
+        - PolicyName: 'LambdaFullAccess'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'lambda:*'
+                  - 'cloudwatch:*'
+                  - 'logs:*'
+                  - 'iam:PassRole'
+                  - 'events:*'
+                  - 's3:*'
+                Resource: '*'
   SchedulerFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -54,4 +67,3 @@ Resources:
       Action: 'lambda:InvokeFunction'
       Principal: events.amazonaws.com
       SourceArn: !GetAtt ScheduleRule.Arn
-Capabilities: 'CAPABILITY_NAMED_IAM'  # add the Capabilities property to the stack
