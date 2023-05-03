@@ -11,6 +11,7 @@
     <PackageReference Include="Amazon.Lambda.Logging.AspNetCore" Version="3.1.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1" />
     <PackageReference Include="AWSSDK.CloudWatchEvents" Version="3.7.100.122" />
+    <PackageReference Include="AWSSDK.CloudWatchLogs" Version="3.7.104.67" />
     <PackageReference Include="AWSSDK.Lambda" Version="3.7.105.11" />
     <PackageReference Include="AWSSDK.RDSDataService" Version="3.7.100.85" />
     <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.101.40" />
